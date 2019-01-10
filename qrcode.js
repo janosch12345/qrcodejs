@@ -173,7 +173,7 @@ var QRCode;
 	}
 	
 	var svgDrawer = (function() {
-
+console.log("svgDrawer")
 		var Drawing = function (el, htOption) {
 			this._el = el;
 			this._htOption = htOption;
@@ -220,9 +220,10 @@ var QRCode;
 	})();
 
 	var useSVG = document.documentElement.tagName.toLowerCase() === "svg";
-
+console.log("useSVG",useSVG)
 	// Drawing in DOM by using Table tag
 	var Drawing = useSVG ? svgDrawer : !_isSupportCanvas() ? (function () {
+          console.log("!_isSupportCanvas")
 		var Drawing = function (el, htOption) {
 			this._el = el;
 			this._htOption = htOption;
@@ -273,6 +274,7 @@ var QRCode;
 		
 		return Drawing;
 	})() : (function () { // Drawing in Canvas
+          console.log("_isSupportCanvas")
 		function _onMakeImage() {
 			this._elImage.src = this._elCanvas.toDataURL("image/png");
 			this._elImage.style.display = "block";
@@ -532,7 +534,8 @@ var QRCode;
 	 * @param {String} [vOption.colorLight="#ffffff"]
 	 * @param {QRCode.CorrectLevel} [vOption.correctLevel=QRCode.CorrectLevel.H] [L|M|Q|H] 
 	 */
-	QRCode = function (el, vOption) {
+	QRCode = function (el, vOption, cb = false) {
+          
 		this._htOption = {
 			width : 256, 
 			height : 256,
@@ -563,6 +566,8 @@ var QRCode;
 			Drawing = svgDrawer;
 		}
 		
+                this._cb = cb;
+                                
 		this._android = _getAndroid();
 		this._el = el;
 		this._oQRCode = null;
@@ -571,6 +576,9 @@ var QRCode;
 		if (this._htOption.text) {
 			this.makeCode(this._htOption.text);	
 		}
+                
+                
+                console.log(this)
 	};
 	
 	/**

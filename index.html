@@ -15,7 +15,7 @@
 var qrcode = new QRCode(document.getElementById("qrcode"), {
 	width : 100,
 	height : 100
-});
+},onQRCode);
 
 function makeCode () {		
 	var elText = document.getElementById("text");
@@ -40,5 +40,10 @@ $("#text").
 			makeCode();
 		}
 	});
+        
+        function onQRCode(err,dataUri){
+          console.log(err,dataUri);
+        }
+        
 </script>
 </body>
