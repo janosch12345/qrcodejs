@@ -276,9 +276,16 @@ var QRCode;
 	})() : (function () { // Drawing in Canvas
           
 		function _onMakeImage() {
-			this._elImage.src = this._elCanvas.toDataURL("image/png");
-			this._elImage.style.display = "block";
-			this._elCanvas.style.display = "none";			
+                  
+                  if (retDataUri){
+                    retDataUri(this._elCanvas.toDataURL("image/png"));
+                    this._elCanvas.style.display = "none";	
+                  } else {
+                    this._elImage.src = this._elCanvas.toDataURL("image/png");
+                    this._elImage.style.display = "block";
+                    this._elCanvas.style.display = "none";	
+                  }
+					
 		}
 		
 		// Android 2.1 bug workaround
@@ -509,6 +516,8 @@ var QRCode;
 		var replacedText = encodeURI(sText).toString().replace(/\%[0-9a-fA-F]{2}/g, 'a');
 		return replacedText.length + (replacedText.length != sText ? 3 : 0);
 	}
+        
+        var retDataUri = false;
 	
 	/**
 	 * @class QRCode
@@ -535,7 +544,7 @@ var QRCode;
 	 * @param {String} [vOption.colorLight="#ffffff"]
 	 * @param {QRCode.CorrectLevel} [vOption.correctLevel=QRCode.CorrectLevel.H] [L|M|Q|H] 
 	 */
-	QRCode = function (el, vOption, cb = false) {
+	QRCode = function (el, vOption, dataUri = false, cb = false) {
           
 		this._htOption = {
 			width : 256, 
@@ -569,7 +578,9 @@ var QRCode;
 		}
 		
                 this._cb = cb;
-                                
+                
+                retDataUri = dataUri;
+                            
 		this._android = _getAndroid();
 		this._el = el;
 		this._oQRCode = null;
@@ -596,7 +607,7 @@ var QRCode;
 		this._oDrawing.draw(this._oQRCode);
                 
 		this.makeImage();
-                
+                                
                 // if callback was given, we call it
                 if (this._cb)
                   this._cb(null);

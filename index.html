@@ -11,12 +11,15 @@
 <input id="text" type="text" value="http://jindo.dev.naver.com/collie" style="width:80%" /><br />
 <div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
 
+
+<img id="img"/>
+
 <script type="text/javascript">
 var qrcode = new QRCode(document.getElementById("qrcode"), {
       text: "http://example.com",
 	width : 100,
 	height : 100
-},onQRCode);
+},onDataURI,onQRCode);
 
 function makeCode () {		
 	var elText = document.getElementById("text");
@@ -44,6 +47,11 @@ $("#text").
         
         function onQRCode(err){
           console.log("loaded");
+        }
+        
+        function onDataURI(uri){
+          console.log(uri);
+          document.getElementById("img").src = uri;
         }
         
 </script>
